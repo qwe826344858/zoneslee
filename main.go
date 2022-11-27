@@ -3,24 +3,23 @@ package main
 import (
 	"fmt"
 	"net/http"
-	//"github.com/akhil/golang-chat"
-	"backend/pkg/websocket"
+	"github.com/qwe826344858/zoneslee/pkg/websocket"
 )
 
 func serverWS(pool *websocket.Pool,w http.ResponseWriter,r *http.Request){
 	fmt.Println("websocket endpoint reached")
 
-	conn,err := websocket.Updrade(w,r)
+	conn,err := websocket.Upgrade(w,r)
 	if err!=nil{
 		fmt.Fprint(w,"%+V\n",err)
 	}
 
-	client := &websocket.Clinent{
+	client := &websocket.Client{
 		Conn : conn,
 		Pool : pool,
 	}
 
-	pool.Register <- client
+	pool.Regsiter <- client
 	client.Read()
 }
 

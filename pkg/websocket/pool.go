@@ -5,7 +5,7 @@ import "fmt"
 type Pool struct{
 	Regsiter chan *Client
 	Unregsiter chan *Client
-	Clients map[*Clinet] bool
+	Clients map[*Client] bool
 	Broadcast chan Message
 }
 

@@ -1,14 +1,13 @@
 package websocket
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"github.com/gorilla/websocket"
 )
 
-var upgrader = websocket.Upgrade{
-	ReadBUfferSize : 1024,
-	WriteBUfferSize : 1024,
+var upgrader = websocket.Upgrader{
+	ReadBufferSize : 1024,
+	WriteBufferSize : 1024,
 }
 
 func Upgrade(w http.ResponseWriter,r *http.Request)(*websocket.Conn,error){
