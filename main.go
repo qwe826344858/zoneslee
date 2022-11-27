@@ -35,5 +35,5 @@ func setupRoutes(){
 func main(){
 	fmt.Println("多人聊天室")
 	setupRoutes()
-	http.ListenAndServe(":9000",nil)
+	http.ListenAndServe(":3000",nil)
 }
