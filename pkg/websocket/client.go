@@ -2,13 +2,16 @@ package websocket
 
 import (
 	"fmt"
-	"log"
 	"github.com/gorilla/websocket"
+	"log"
+	"sync"
 )
+
 type Client struct {
 	ID   string
 	Conn *websocket.Conn
 	Pool *Pool
+	mu   sync.Mutex
 }
 
 type Message struct {
@@ -16,9 +19,10 @@ type Message struct {
 	Body string `json:"body"`
 }
 
+//持续监听前端返回的信息
 func (c *Client) Read() {
 	defer func() {
-		c.Pool.Unregister <- c
+		c.Pool.Unregsiter <- c
 		c.Conn.Close()
 	}()
 
@@ -30,6 +34,6 @@ func (c *Client) Read() {
 		}
 		message := Message{Type: messageType, Body: string(p)}
 		c.Pool.Broadcast <- message
-		fmt.Printf("Message Received: %+v\n", message)
+		fmt.Println("message received: %+v\n", message)
 	}
 }
