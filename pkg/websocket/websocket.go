@@ -9,16 +9,17 @@ import (
 // 我们需要定义一个 Upgrader
 // 它需要定义 ReadBufferSize 和 WriteBufferSize
 var upgrader = websocket.Upgrader{
-	ReadBufferSize : 1024,
-	WriteBufferSize : 1024,
+	ReadBufferSize:  1024,
+	WriteBufferSize: 1024,
+	CheckOrigin: func(r *http.Request) bool { return true },
 }
 
-func Upgrade(w http.ResponseWriter,r *http.Request)(*websocket.Conn,error){
-	upgrader.CheckOrigin = func(r *http.Request) bool {return true}
-	conn,err :=upgrader.Upgrade(w,r,nil)
-	if err != nil{
+func Upgrade(w http.ResponseWriter, r *http.Request) (*websocket.Conn, error) {
+	conn, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
 		log.Println(err)
-		return nil,err
+		return nil, err
 	}
-	return conn,nil
+
+	return conn, nil
 }

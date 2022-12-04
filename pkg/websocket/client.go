@@ -3,27 +3,22 @@ package websocket
 import (
 	"fmt"
 	"log"
-	"sync"
 	"github.com/gorilla/websocket"
 )
 type Client struct {
-	ID	string
-	Conn	*websocket.Conn
-	Pool	*Pool
-	mu	sync.Mutex
-
+	ID   string
+	Conn *websocket.Conn
+	Pool *Pool
 }
 
-type Message struct{
-	Type int `json:"type"`
+type Message struct {
+	Type int    `json:"type"`
 	Body string `json:"body"`
 }
 
-
-//持续监听前端返回的信息
-func (c *Client) Read(){
-	defer func(){
-		c.Pool.Unregsiter <- c
+func (c *Client) Read() {
+	defer func() {
+		c.Pool.Unregister <- c
 		c.Conn.Close()
 	}()
 
@@ -33,8 +28,8 @@ func (c *Client) Read(){
 			log.Println(err)
 			return
 		}
-		message := Message{Type:messageType,Body:string(p)}
+		message := Message{Type: messageType, Body: string(p)}
 		c.Pool.Broadcast <- message
-		fmt.Println("message received:%+v\n",message)
+		fmt.Printf("Message Received: %+v\n", message)
 	}
 }
