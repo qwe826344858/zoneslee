@@ -19,6 +19,8 @@ type Message struct{
 	Body string `json:"body"`
 }
 
+
+//持续监听前端返回的信息
 func (c *Client) Read(){
 	defer func(){
 		c.Pool.Unregsiter <- c
@@ -33,6 +35,6 @@ func (c *Client) Read(){
 		}
 		message := Message{Type:messageType,Body:string(p)}
 		c.Pool.Broadcast <- message
-		fmt.Println("message received:%+V\n",message)
+		fmt.Println("message received:%+v\n",message)
 	}
 }

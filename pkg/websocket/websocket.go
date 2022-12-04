@@ -5,6 +5,9 @@ import (
 	"github.com/gorilla/websocket"
 )
 
+// 根据gorilla使用文档
+// 我们需要定义一个 Upgrader
+// 它需要定义 ReadBufferSize 和 WriteBufferSize
 var upgrader = websocket.Upgrader{
 	ReadBufferSize : 1024,
 	WriteBufferSize : 1024,

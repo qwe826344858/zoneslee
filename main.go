@@ -11,7 +11,7 @@ func serverWS(pool *websocket.Pool,w http.ResponseWriter,r *http.Request){
 
 	conn,err := websocket.Upgrade(w,r)
 	if err!=nil{
-		fmt.Fprint(w,"%+V\n",err)
+		fmt.Fprint(w,"%+v\n",err)
 	}
 
 	client := &websocket.Client{
@@ -33,7 +33,7 @@ func setupRoutes(){
 }
 
 func main(){
-	fmt.Println("多人聊天室")
+	fmt.Println("多人聊天室开启")
 	setupRoutes()
-	http.ListenAndServe(":3000",nil)
+	http.ListenAndServe(":9000",nil)
 }

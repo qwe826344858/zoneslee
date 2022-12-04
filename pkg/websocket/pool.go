@@ -2,6 +2,7 @@ package websocket
 
 import "fmt"
 
+//连接池
 type Pool struct{
 	Regsiter chan *Client
 	Unregsiter chan *Client
@@ -9,6 +10,7 @@ type Pool struct{
 	Broadcast chan Message
 }
 
+//当启动服务时会给连接池分配空间
 func NewPool() *Pool{
 	return &Pool{
 		Regsiter:   make(chan *Client),
