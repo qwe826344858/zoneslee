@@ -6,11 +6,12 @@ import (
 	"net/http"
 )
 
-func serveWs(pool *websocket.Pool, w http.ResponseWriter, r *http.Request) {
-	fmt.Println("WebSocket Endpoint Hit")
+func serverWS(pool *websocket.Pool, w http.ResponseWriter, r *http.Request) {
+	fmt.Println("websocket endpoint reached")
+
 	conn, err := websocket.Upgrade(w, r)
 	if err != nil {
-		fmt.Fprintf(w, "%+v\n", err)
+		fmt.Fprint(w, "%+v\n", err)
 	}
 
 	client := &websocket.Client{
@@ -18,7 +19,7 @@ func serveWs(pool *websocket.Pool, w http.ResponseWriter, r *http.Request) {
 		Pool: pool,
 	}
 
-	pool.Register <- client
+	pool.Regsiter <- client
 	client.Read()
 }
 
@@ -27,12 +28,12 @@ func setupRoutes() {
 	go pool.Start()
 
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
-		serveWs(pool, w, r)
+		serverWS(pool, w, r)
 	})
 }
 
 func main() {
-	fmt.Println("Distributed Chat App v0.01")
+	fmt.Println("多人聊天室开启")
 	setupRoutes()
 	http.ListenAndServe(":9000", nil)
 }
