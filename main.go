@@ -19,7 +19,7 @@ func serverWS(pool *websocket.Pool, w http.ResponseWriter, r *http.Request) {
 		Pool: pool,
 	}
 
-	pool.Regsiter <- client
+	pool.Register <- client
 	client.Read()
 }
 
