@@ -4,8 +4,8 @@ import "fmt"
 
 //连接池
 type Pool struct {
-	Regsiter   chan *Client
-	Unregsiter chan *Client
+	Register   chan *Client
+	Unregister chan *Client
 	Clients    map[*Client]bool
 	Broadcast  chan Message
 }
@@ -13,8 +13,8 @@ type Pool struct {
 //当启动服务时会给连接池分配空间
 func NewPool() *Pool {
 	return &Pool{
-		Regsiter:   make(chan *Client),
-		Unregsiter: make(chan *Client),
+		Register:   make(chan *Client),
+		Unregister: make(chan *Client),
 		Clients:    make(map[*Client]bool),
 		Broadcast:  make(chan Message),
 	}
@@ -23,7 +23,7 @@ func NewPool() *Pool {
 func (pool *Pool) Start() {
 	for {
 		select {
-		case client := <-pool.Regsiter:
+		case client := <-pool.Register:
 			pool.Clients[client] = true
 			fmt.Println("连接池大小为：", len(pool.Clients))
 			for client, _ := range pool.Clients {
@@ -31,7 +31,7 @@ func (pool *Pool) Start() {
 				client.Conn.WriteJSON(Message{Type: 1, Body: "新用户正在加入..."})
 			}
 			break
-		case client := <-pool.Unregsiter:
+		case client := <-pool.Unregister:
 			delete(pool.Clients, client)
 			fmt.Println("连接池大小为：", len(pool.Clients))
 			for client, _ := range pool.Clients {

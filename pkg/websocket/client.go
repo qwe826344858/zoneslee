@@ -22,7 +22,7 @@ type Message struct {
 //持续监听前端返回的信息
 func (c *Client) Read() {
 	defer func() {
-		c.Pool.Unregsiter <- c
+		c.Pool.Unregister <- c
 		c.Conn.Close()
 	}()
 
